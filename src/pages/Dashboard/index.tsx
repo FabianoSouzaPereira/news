@@ -80,10 +80,31 @@ const Dashboard: React.FC<types> = () => {
     signCheck();
   });
 
+  function handleSignOut() {
+    signOut();
+  }
   return (
     <SafeAreaView style={styles.safearea}>
       <View style={styles.mainView}>
-        
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Últimas Notícias</Text>
+        </View>
+        <View style={styles.touchs}>
+          <TouchableWithoutFeedback style={styles.touch}>
+
+            <View style={styles.bottomView}>
+              <View style={styles.txtInputView}>
+
+ 
+              </View>
+              <View style={styles.viewSair}>
+                <Text style={styles.txtSair}  onPress={() => handleSignOut()}>
+                  Sair
+                </Text>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
       </View>
     </SafeAreaView>
   );
