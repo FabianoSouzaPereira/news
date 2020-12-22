@@ -1,24 +1,14 @@
-import React, { useContext } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import AuthContext from '../contexts/auth';
+import Dashboard from '../pages/Dashboard';
 
-import AuthRoutes from '../routes/auth.routes';
-import AppRoutes from '../routes/app.routes';
+const AppStack = createStackNavigator();
 
-const Routes: React.FC = () => {
-  const { signed, loading } = useContext(AuthContext);
+const AppRoutes: React.FC = () => (
+  <AppStack.Navigator>
+    <AppStack.Screen name="Dashboard" component={Dashboard} />
+  </AppStack.Navigator>
+);
 
-  if (loading) {
-    return (
-      // eslint-disable-next-line react-native/no-inline-styles
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#666" />
-      </View>
-    );
-  }
-
-  return signed ? <AppRoutes /> : <AuthRoutes />;
-};
-
-export default Routes;
+export default AppRoutes;
