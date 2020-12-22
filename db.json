@@ -1,0 +1,22 @@
+{
+  "news": [
+    { "id": 1, "title": "json-server","text": "Texto da notícia aqui.", "author": "fabiano" }
+  ],
+  "comments": [
+    { "id": 1, "body": "some comment", "postId": 1 },
+    { "id": 2, "body": "some comment2", "postId": 2 }
+  ],
+  "user": [
+    { "username": "fabiano", "password": "1234" }
+  ],
+  "sign-in": [
+    {"username": "fabiano@gmail.com", "password": "1234"},
+    {"username": "lucas@gmail.com", "password": "4321"}
+  ],
+  "sign-up": [
+    {"email": "fabiano", "password": "1234"}
+  ],
+  "forgot-password":[
+    {"name":"fabiano"}
+  ]
+}

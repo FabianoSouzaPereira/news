@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { AuthProvider } from './src/contexts/auth';
 
-import Routes from './routes';
+import Routes from './src/routes';
 
 const App: React.FC = () => {
   return (
