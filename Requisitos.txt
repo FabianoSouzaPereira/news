@@ -1,0 +1,22 @@
+Você deverá criar um app para um portal de notícias para realização de cadastro de notícias, pesquisa de notícias e visualização de notícias.
+Issue-001 Criar cadastro de usuario - Branch user
+
+Issue-002 Implementar CRUD cadastro de usuários - Branch implement-user-crud
+
+Issue-003 cadastro de notícias - Branch news
+No cadastro de notícias o usuário poderá informar os seguintes dados: 
+    • Título da notícia (obrigatório);
+    • Texto da notícia (ilimitado e obrigatório);
+    • Autor (obrigatório). 
+    
+Issue-004 Implementar CRUD do cadastro de noticias Branch crud-news
+Opção de editar e excluir.
+
+Issue-005 Criar formulario de pesquisa de notícias - Branch search-news
+Na pesquisa de notícias o usuário poderá pesquisar pelas notícias cadastradas.
+
+Issue-006 criar layout para o app - Branch layout-app
+Criar um layout para o app;
+
+Issue-007 implemetar layout para o app - Branch implement-layout
+E implementar o mesmo demonstrando as funcionalidades sem realizar integração com backend.
