@@ -4,7 +4,17 @@
       "id": 1,
       "title": "json-server",
       "text": "Texto da notícia aqui.",
-      "author": "fabiano"
+      "author": "fabiano@gmail.com",
+      "createdAt": "2020-05-01",
+      "updatedAt": "2020-05-02"
+    },
+    {
+      "id": 2,
+      "title": "Noticia Nova",
+      "text": "Texto da notícia aqui,Texto da notícia aqui,Texto da notícia aqui. Texto da notícia aqui. Texto da notícia aqui. Texto da notícia aqui. Texto da notícia aqui.",
+      "author": "fabiano@gmail.com",
+      "createdAt": "2020-05-01",
+      "updatedAt": "2020-05-02"
     }
   ],
   "comments": [

@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
