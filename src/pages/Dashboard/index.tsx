@@ -1,38 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import {
-  useNavigation,
-  useIsFocused,
-  useLinkProps,
-} from '@react-navigation/native';
+import React, { useContext, useState, useEffect } from 'react'
 import AuthContext from '../../contexts/auth';
-import * as auth from '../../services/auth';
-import api from '../../services/api';
-import Inputs from '../../component/Inputs';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BlurView } from '@react-native-community/blur';
-import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-community/async-storage';
+import api from '../../services/api';
 import {
   View,
   StyleSheet,
   Text,
   StatusBar,
-  TextInput,
-  Keyboard,
   RefreshControl,
 } from 'react-native';
 import {
-  TouchableWithoutFeedback,
   FlatList,
+  TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import News from '../../components/news.component';
 
 interface types {
   id?: number;
-  coment: string;
   title: string;
-  like: string;
+  author: string;
+  coment: string;
   posts: Object[];
   index: number;
   res: {
@@ -48,9 +37,9 @@ const wait = (timeout: number) => {
 };
 
 const Dashboard: React.FC<types> = () => {
-  const { signOut, getFeed } = useContext(AuthContext);
+  const { signOut } = useContext(AuthContext);
   const [refreshing, setRefreshing] = React.useState(false);
-  const { coment, like, dislike, love } = useContext(AuthContext);
+  const [] = React.useState(false);
   const [value, onChangeText] = React.useState('');
 
   useEffect(() => {
@@ -58,7 +47,7 @@ const Dashboard: React.FC<types> = () => {
       const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
 
       if (storagedToken) {
-        //getFeeds();
+        getFeeds();
       } else {
         return;
       }
@@ -83,6 +72,46 @@ const Dashboard: React.FC<types> = () => {
   function handleSignOut() {
     signOut();
   }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  let itens: any[] = [];
+  const [DATA, setDATA] = useState<any[]>();
+  async function getFeeds() {
+    console.log("feed");
+    api.get('/news').then((res) => {
+      for (let feed of res.data) {
+        console.log(feed);
+        itens.push({
+          id: feed.id.toString(),
+          title: (
+            <News
+              id={feed.id}
+              title={feed.title}
+              author={feed.author.username}
+              content={feed.content}
+              createdAt={feed.createdAt}
+              updatedAt={feed.updatedAt}
+            />
+          ),
+        });
+      }
+      setDATA(itens);
+    });
+  }
+
+  const Item = ({ title }) => (
+    <View style={styles.title_mensage}>
+      <Text style={styles.mensage}>{title}</Text>
+    </View>
+  );
+
+  const renderItem = ({ item }) => <Item title={item.title}  />;
+
   return (
     <SafeAreaView style={styles.safearea}>
       <View style={styles.mainView}>
@@ -94,8 +123,15 @@ const Dashboard: React.FC<types> = () => {
 
             <View style={styles.bottomView}>
               <View style={styles.txtInputView}>
-
- 
+                <Text>oi</Text>
+              <FlatList
+                refreshControl={
+                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+                data={DATA}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+              />
               </View>
               <View style={styles.viewSair}>
                 <Text style={styles.txtSair}  onPress={() => handleSignOut()}>
@@ -103,6 +139,7 @@ const Dashboard: React.FC<types> = () => {
                 </Text>
               </View>
             </View>
+
           </TouchableWithoutFeedback>
         </View>
       </View>

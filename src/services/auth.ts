@@ -3,6 +3,7 @@ import api from './api';
 import AuthContext from '../contexts/auth';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
+import { error } from 'console';
 
 interface Response {
   token: string;
@@ -14,6 +15,7 @@ interface Response {
   username: string;
   password: string;
   request: string;
+  reject: string;
   headers: string;
   data: string;
   status: number;
@@ -38,15 +40,22 @@ interface Response {
 export function signIn(email: string, password: string): Promise<Response> {
   return new Promise<Response>((resolve) => {
     resolve(
-      api.post('/sign-in', {
-        username: email,
+      api.get(`/sign-in/?username=${ email }`, {
         password: password,
-      }).catch(function (response) {
+      })
+        .then(function (response: { data: any; status: any; }) {
+          if (response.data[ 0 ].password === password && response.data != undefined) {
+            console.log(response.data[ 0 ].id);
+            return response;
+          }
+          return "";
 
-        console.log(response.data);
-        return response.status;
+        }).catch(function (response: any) {
 
-      }),
+          console.log("ERRO " + response.error);
+          return response.error;
+
+        })
     );
   });
 }
@@ -57,7 +66,17 @@ export function register(email: string, password: string): Promise<Response> {
       api.post('/sign-up', {
         username: email,
         password: password,
-      }),
+      }).then(function (response) {
+
+        console.log(response.data);
+        return response.status;
+
+      }).catch(function (response) {
+
+        console.log(response);
+        return response;
+
+      })
     );
   });
 }
@@ -83,8 +102,7 @@ export function forgotPassword(username: string): Promise<Response> {
 export function feed(content: string): Promise<Response> {
   return new Promise((resolve, reject) => {
     resolve(
-      api
-        .post('/feed', { content: content })
+      api.post('/news', { content: content })
         .then(function (response) {
           console.log(response.status);
           return response.data;

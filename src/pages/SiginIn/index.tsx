@@ -10,10 +10,13 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import AuthContext from '../../contexts/auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import { signIn } from '../../services/auth';
+
 
 const SignIn: React.FC = () => {
-  const { signed, signIn } = useContext(AuthContext);
-  const [emailValue, onChangeText] = React.useState('');
+  const { signed, setSigned } = useContext(AuthContext);
+  const [user_id, setUser_id] = React.useState(null);
+  const [emailValue, onChangeText] = React.useState();
   const [passwordValue, passwordChange] = React.useState('');
   const nav = useNavigation();
 
@@ -28,8 +31,20 @@ const SignIn: React.FC = () => {
     signCheck();
   });
 
-  function handleSign(email: string, password: string) {
-    signIn(email, password);
+  async function handleSign(email: string, password: string) {
+   const  response = await signIn(email, password);
+    if ( !(this === undefined) ){
+      try {
+        console.log('teste ' + JSON.stringify((response.data[0].id).toString()));
+        setUser_id(JSON.stringify(response.data[0].id));
+        setSigned(true);
+      } catch (error) {
+        console.log(error);
+      }
+
+    }else{
+      //Todo mensagem
+    }
   }
 
   function registerUser() {

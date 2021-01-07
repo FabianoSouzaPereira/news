@@ -1,22 +1,57 @@
 {
   "news": [
-    { "id": 1, "title": "json-server","text": "Texto da notícia aqui.", "author": "fabiano" }
+    {
+      "id": 1,
+      "title": "json-server",
+      "text": "Texto da notícia aqui.",
+      "author": "fabiano"
+    }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 },
-    { "id": 2, "body": "some comment2", "postId": 2 }
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    },
+    {
+      "id": 2,
+      "body": "some comment2",
+      "postId": 2
+    }
   ],
   "user": [
-    { "username": "fabiano", "password": "1234" }
+    {
+      "username": "fabiano",
+      "password": "1234"
+    }
   ],
   "sign-in": [
-    {"username": "fabiano@gmail.com", "password": "1234"},
-    {"username": "lucas@gmail.com", "password": "4321"}
+    {
+      "id": 1,
+      "username": "fabiano@gmail.com",
+      "password": "1234"
+    },
+    {
+      "username": "gato@teste",
+      "password": "1234",
+      "id": 11
+    }
   ],
   "sign-up": [
-    {"email": "fabiano", "password": "1234"}
+    {
+      "email": "fabiano",
+      "password": "1234",
+      "id": 1
+    },
+    {
+      "username": "teste@teste.com",
+      "password": "1234",
+      "id": 2
+    }
   ],
-  "forgot-password":[
-    {"name":"fabiano"}
+  "forgot-password": [
+    {
+      "name": "fabiano"
+    }
   ]
 }

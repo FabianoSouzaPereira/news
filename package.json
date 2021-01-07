@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "startjson": "json-server --watch db.json"
+    "startjson": "json-server --watch db.json ."
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",

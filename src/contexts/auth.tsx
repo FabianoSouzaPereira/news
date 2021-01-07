@@ -10,22 +10,17 @@ interface AuthContextData {
   user: Object | null;
   token: string | '';
   data: string;
-  status: string | '';
   loading: boolean;
   password: string | '';
-  email: string;
   id: number;
   coment: string;
-  like: number;
-  dislike: number;
-  love: number;
   feedsres: Object[];
-  signIn(email: string, password: string): PromiseLike<Response>;
-  signOut(): void;
-  signUp(email: string, password: string): PromiseLike<Response>;
-  remember(email: string): Promise<Response>;
-  getFeed(value: string): Promise<string>;
   sendReaction(feedId: number, like: boolean, love: boolean): Promise<string>;
+  signUp(email:string, password:string):Promise<void>;
+  signOut():Promise<void>;
+  setSigned: any;
+  user_id: any;
+  setUser_id: any;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -41,15 +36,21 @@ export const AuthProvider: React.FC = ({ children }) => {
   // const [email, setEmail] = useState('');
   const [id, setId] = useState(0);
   const [coment, setComent] = useState();
-
+  const [signed, setSigned] = useState(false);
+  const [user_id, setUser_id] = useState<any>(null);
+ 
   useEffect(() => {
     setLoading(true);
     async function loadStorageData() {
-      const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
+      // const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
 
-      if (storagedToken) {
-        api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
-        setToken(storagedToken);
+      // if (storagedToken) {
+      //   api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
+      //   setToken(storagedToken);
+      // }
+      if (signed === false){
+        console.log("signed is false");
+          return;
       }
     }
 
@@ -57,16 +58,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     loadStorageData();
   }, []);
 
-  // eslint-disable-next-line no-shadow
-  async function signIn(email: string, password: string) {
-    const response = await auth.signIn(email, password);
 
-    setToken(response.data);
-
-    api.defaults.headers.Authorization = `Bearer ${response.data}`;
-
-    await AsyncStorage.setItem('@RNAuth:token', response.data);
-  }
 
   // eslint-disable-next-line no-shadow
   async function signUp(email: string, password: string) {
@@ -81,8 +73,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   }
 
   async function signOut() {
-    await AsyncStorage.clear();
-    setToken('');
+    setSigned(false);
   }
 
   async function remember(email: string) {
@@ -115,23 +106,21 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        signed: true,
+        signed: !!signed,
+        setSigned,
         user,
         token,
         data,
         loading,
-        signIn,
-        signUp,
-        remember,
-        signOut,
         password,
-        // email,
         id,
         coment,
-        setComent,
-        getFeed,
         sendReaction,
         feedsres,
+        signUp,
+        signOut,
+        user_id,
+        setUser_id,
       }}>
       {children}
     </AuthContext.Provider>
