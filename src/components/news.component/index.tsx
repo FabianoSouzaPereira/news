@@ -18,8 +18,10 @@ const News = (props:{
         <View style={styles.main}>
           <View style={styles.textfield_main}>
             <Text style={styles.title}>{props.title}</Text>
-            <Text style={styles.content}>{props.content}</Text>
             <Text style={styles.id}>{props.author}</Text>
+            <Text style={styles.content}>{props.content}</Text>
+            <Text style={styles.create}>{'criado: ' + props.createdAt}</Text>
+            <Text style={styles.update}>{'editado: ' + props.updatedAt}</Text>
             <TextInput   />
           </View>
         </View>
@@ -33,11 +35,11 @@ const styles = StyleSheet.create({
   Conteiner: {
     flexDirection: 'row',
     marginTop: 20,
-    marginStart: 45,
+    marginStart: 15,
     minWidth: 320,
     maxWidth: 400,
     minHeight: 100,
-    maxHeight: 800,
+    //maxHeight: 800,
     backgroundColor: 'rgba(255,255,255, 0.8)',
     borderColor: '#000',
     borderWidth: 2,
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     color: '#000',
     fontSize: 25,
-    height: 150,
+    //height: 150,
     borderTopStartRadius: 17,
     borderBottomLeftRadius: 13,
     borderTopLeftRadius: 13,
@@ -67,10 +69,11 @@ const styles = StyleSheet.create({
     marginStart: 15,
   },
   title:{
-
+    marginTop:18,
+    fontSize: 20
   },
   content:{
-
+    marginTop:10
   },
   textfild: {
     flex: 1,
@@ -90,7 +93,24 @@ const styles = StyleSheet.create({
     marginStart: 10,
   },
   id: {
-    margin: 8,
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 3
+  },
+  create:{
+    color: '#000',
+    fontSize: 12,
+    alignItems: 'center',
+    position: 'absolute',
+    paddingBottom:10
+  },
+  update:{
+    color: '#000',
+    fontSize: 12,
+    alignItems: 'center',
+    position: 'absolute',
+    marginStart: 150,
+    paddingBottom:10
   }
 });
 

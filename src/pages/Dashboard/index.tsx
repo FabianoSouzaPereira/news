@@ -4,18 +4,22 @@ import AuthContext from '../../contexts/auth';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../../services/api';
+import News from '../../components/news.component';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   View,
   StyleSheet,
   Text,
   StatusBar,
+  TextInput,
+  Keyboard,
   RefreshControl,
 } from 'react-native';
 import {
   FlatList,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
-import News from '../../components/news.component';
+
 
 interface types {
   id?: number;
@@ -37,16 +41,15 @@ const wait = (timeout: number) => {
 };
 
 const Dashboard: React.FC<types> = () => {
-  const { signOut } = useContext(AuthContext);
+  const { signOut, getFeed, signed} = useContext(AuthContext);
   const [refreshing, setRefreshing] = React.useState(false);
   const [] = React.useState(false);
   const [value, onChangeText] = React.useState('');
 
   useEffect(() => {
     async function loader() {
-      const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
 
-      if (storagedToken) {
+      if (signed === true) {
         getFeeds();
       } else {
         return;
@@ -69,10 +72,17 @@ const Dashboard: React.FC<types> = () => {
     signCheck();
   });
 
+  // eslint-disable-next-line no-shadow
+  async function send(value: string) {
+    Keyboard.dismiss();
+    getFeed(value);
+    getFeeds();
+    onChangeText('');
+  }
+
   function handleSignOut() {
     signOut();
   }
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -83,7 +93,7 @@ const Dashboard: React.FC<types> = () => {
   const [DATA, setDATA] = useState<any[]>();
   async function getFeeds() {
     console.log("feed");
-    api.get('/news').then((res) => {
+    api.get('/news').then((res: { data: any; }) => {
       for (let feed of res.data) {
         console.log(feed);
         itens.push({
@@ -92,8 +102,8 @@ const Dashboard: React.FC<types> = () => {
             <News
               id={feed.id}
               title={feed.title}
-              author={feed.author.username}
-              content={feed.content}
+              author={feed.author}
+              content={feed.text}
               createdAt={feed.createdAt}
               updatedAt={feed.updatedAt}
             />
@@ -118,23 +128,47 @@ const Dashboard: React.FC<types> = () => {
         <View style={styles.header}>
           <Text style={styles.headerText}>Últimas Notícias</Text>
         </View>
-        <View style={styles.touchs}>
+          <FlatList
+                  refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                  }
+                  data={DATA}
+                  keyExtractor={(item) => item.id}
+                  renderItem={renderItem}
+                />
+          <View style={styles.touchs}>
           <TouchableWithoutFeedback style={styles.touch}>
-
+          <FlatList
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              data={DATA}
+              keyExtractor={(item) => item.id}
+              renderItem={renderItem}
+            />
             <View style={styles.bottomView}>
               <View style={styles.txtInputView}>
-                <Text>oi</Text>
-              <FlatList
-                refreshControl={
-                  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
-                data={DATA}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-              />
+                <TextInput
+                  style={styles.txtInput}
+                  editable={true}
+                  focusable={true}
+                  blurOnSubmit={true}
+                  maxLength={150}
+                  multiline={false}
+                  onChangeText={(text) => onChangeText(text)}
+                  value={value}
+                  clearTextOnFocus={true}
+                />
+                <Icon
+                  name="send-o"
+                  size={24}
+                  color="#999"
+                  style={styles.send}
+                  onPress={() => send(value)}
+                />
               </View>
               <View style={styles.viewSair}>
-                <Text style={styles.txtSair}  onPress={() => handleSignOut()}>
+                <Text style={styles.txtSair} onPress={() => handleSignOut()}>
                   Sair
                 </Text>
               </View>

@@ -5,6 +5,7 @@ import * as auth from '../services/auth';
 import api from '../services/api';
 import { ToastAndroid } from 'react-native';
 
+
 interface AuthContextData {
   signed: boolean;
   user: Object | null;
@@ -18,12 +19,15 @@ interface AuthContextData {
   sendReaction(feedId: number, like: boolean, love: boolean): Promise<string>;
   signUp(email:string, password:string):Promise<void>;
   signOut():Promise<void>;
+  remember(email: string): Promise<Response>;
+  getFeed(value: string): Promise<string>;
   setSigned: any;
   user_id: any;
   setUser_id: any;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string | ''>('');
@@ -36,18 +40,13 @@ export const AuthProvider: React.FC = ({ children }) => {
   // const [email, setEmail] = useState('');
   const [id, setId] = useState(0);
   const [coment, setComent] = useState();
-  const [signed, setSigned] = useState(false);
+  const [signed, setSigned] = useState(true);
   const [user_id, setUser_id] = useState<any>(null);
  
   useEffect(() => {
     setLoading(true);
     async function loadStorageData() {
-      // const storagedToken = await AsyncStorage.getItem('@RNAuth:token');
 
-      // if (storagedToken) {
-      //   api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
-      //   setToken(storagedToken);
-      // }
       if (signed === false){
         console.log("signed is false");
           return;
@@ -119,6 +118,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         feedsres,
         signUp,
         signOut,
+        getFeed,
+        remember,
         user_id,
         setUser_id,
       }}>
